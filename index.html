@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resilience Finance AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #4f46e5 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .upload-area {
+            border: 3px dashed #6366f1;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover {
+            background: #f8f9ff;
+            border-color: #818cf8;
+        }
+        
+        .upload-area.dragover {
+            background: #f0f4ff;
+            border-color: #6366f1;
+        }
+        
+        input[type="file"] {
+            display: none;
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .results {
+            display: none;
+        }
+        
+        .results.show {
+            display: block;
+        }
+        
+        .score-badge {
+            display: inline-block;
+            font-size: 3em;
+            font-weight: bold;
+            width: 100px;
+            height: 100px;
+            line-height: 100px;
+            border-radius: 50%;
+            text-align: center;
+            margin: 20px auto;
+            color: white;
+        }
+        
+        .score-A { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .score-B { background: linear-gradient(135deg, #0575E6 0%, #00F260 100%); }
+        .score-C { background: linear-gradient(135deg, #F2994A 0%, #F2C94C 100%); }
+        .score-D { background: linear-gradient(135deg, #F2994A 0%, #EB5757 100%); }
+        .score-F { background: linear-gradient(135deg, #EB5757 0%, #8B0000 100%); }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #6366f1;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        .list-section {
+            margin: 20px 0;
+        }
+        
+        .list-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .concern-item, .rec-item {
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .concern-item {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .rec-item {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+        
+        .icon {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            display: none;
+        }
+        
+        .loading.show {
+            display: block;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #6366f1;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💰 Resilience Finance AI</h1>
+            <p>Understand your financial health in seconds! Its not enough to set a budget - understanding your financial stance and identify potential risks could potentially benefit your situation and future.</p>
+        </div>
+        
+        <div class="card">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📁</div>
+                <h3>Upload Financial Transactions</h3>
+                <p style="color: #666; margin: 10px 0;">Drop your CSV file here or click to browse. Please remove any personal information before uploading i.e. Name, Bank Account and/or Routing Numbers. <strong>**NOTE:</strong> This analysis is based solely on transaction patterns within the uploaded timeframe. It does not account for: utilities bundled in rent, one-time expenses, debt payoff, or life circumstances. Use this as a starting point for deeper financial review.</p>
+                <input type="file" id="fileInput" accept=".csv">
+                <button class="btn" onclick="document.getElementById('fileInput').click()">
+                    Choose File
+                </button>
+            </div>
+        </div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Analyzing your transactions...</p>
+        </div>
+        
+        <div class="results" id="results">
+            <div class="card">
+                <div style="text-align: center;">
+                    <h2>Your Financial Health Score</h2>
+                    <div class="score-badge" id="scoreBadge">A</div>
+                </div>
+                
+                <!-- AI Assessment Section -->
+                <div id="assessmentSection" style="display: none; margin: 20px 0; padding: 20px; background: #f8f9ff; border-left: 4px solid #6366f1; border-radius: 8px;">
+                    <h3 style="color: #4f46e5; margin-bottom: 10px;">📊 AI Assessment</h3>
+                    <p id="assessment" style="color: #1e293b; line-height: 1.6;"></p>
+                </div>
+                
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value" id="transCount">0</div>
+                        <div class="stat-label">Transactions</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="income">$0</div>
+                        <div class="stat-label">Income</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="expenses">$0</div>
+                        <div class="stat-label">Expenses</div>
+                    </div>
+                </div>
+                
+                <div class="list-section">
+                    <h3>⚠️ Key Concerns</h3>
+                    <div id="concerns"></div>
+                </div>
+                
+                <div class="list-section">
+                    <h3>✅ Recommendations</h3>
+                    <div id="recommendations"></div>
+                </div>
+
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn" onclick="location.reload()">
+                        Analyze Another File
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Built for Encode.io Hackathon | Financial Health Track</p>
+        </div>
+    </div>
+    
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const loading = document.getElementById('loading');
+        const results = document.getElementById('results');
+        
+        // Drag and drop
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+        
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+        
+        async function handleFile(file) {
+            if (!file.name.endsWith('.csv')) {
+                alert('Please upload a CSV file');
+                return;
+            }
+            
+            // Show loading
+            uploadArea.parentElement.style.display = 'none';
+            loading.classList.add('show');
+            
+            // Upload file
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            try {
+                const response = await fetch('http://localhost:8000/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Upload failed');
+                }
+                
+                const data = await response.json();
+                displayResults(data);
+            } catch (error) {
+                alert('Error analyzing file. Make sure the API is running on port 8000.');
+                location.reload();
+            }
+        }
+        
+        function displayResults(data) {
+            // Hide loading
+            loading.classList.remove('show');
+            
+            // Show results
+            results.classList.add('show');
+            
+            // Update score
+            const score = data.analysis.score;
+            const scoreBadge = document.getElementById('scoreBadge');
+            scoreBadge.textContent = score;
+            scoreBadge.className = 'score-badge score-' + score;
+            
+            // Update stats
+            document.getElementById('transCount').textContent = data.transactions;
+            document.getElementById('income').textContent = '$' + data.income.toLocaleString();
+            document.getElementById('expenses').textContent = '$' + data.expenses.toLocaleString();
+            
+            // Show AI assessment if available
+            if (data.analysis.assessment) {
+                document.getElementById('assessment').textContent = data.analysis.assessment;
+                document.getElementById('assessmentSection').style.display = 'block';
+            }
+            
+            // Update concerns
+            const concernsDiv = document.getElementById('concerns');
+            concernsDiv.innerHTML = '';
+            data.analysis.concerns.forEach(concern => {
+                const div = document.createElement('div');
+                div.className = 'concern-item';
+                div.innerHTML = `<span class="icon">⚠️</span><span>${concern}</span>`;
+                concernsDiv.appendChild(div);
+            });
+            
+            // Update recommendations
+            const recsDiv = document.getElementById('recommendations');
+            recsDiv.innerHTML = '';
+            data.analysis.recommendations.forEach(rec => {
+                const div = document.createElement('div');
+                div.className = 'rec-item';
+                div.innerHTML = `<span class="icon">✓</span><span>${rec}</span>`;
+                recsDiv.appendChild(div);
+            });
+        }
+    </script>
+</body>
+</html>
