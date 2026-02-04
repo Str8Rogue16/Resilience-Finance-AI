@@ -83,7 +83,7 @@ opik - LLM call tracking and monitoring
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/resilience-finance-ai.git
+git clone https://github.com/Str8Rogue16/resilience-finance-ai.git
 cd resilience-finance-ai
 
 # Backend setup
