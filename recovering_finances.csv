@@ -1,0 +1,173 @@
+date,description,amount,category
+2025-07-31,Direct Deposit - Salary,2250.0,Income
+2025-07-31,Rent Payment,-1600.0,Fixed Costs
+2025-07-31,Clothing Store,-128.0,Variable Costs
+2025-08-01,Netflix,-15.99,Fixed Costs
+2025-08-01,Transfer to Savings,-200.0,Savings
+2025-08-01,Target,-50.0,Variable Costs
+2025-08-02,Amazon Prime,-14.99,Fixed Costs
+2025-08-02,Student Loan Payment,-300.0,Debt Payment
+2025-08-02,Door Dash,-21.0,Variable Costs
+2025-08-03,Door Dash,-24.0,Variable Costs
+2025-08-04,Electric Company,-106.0,Fixed Costs
+2025-08-05,Local Bar,-47.0,Variable Costs
+2025-08-06,Pizza Delivery,-24.0,Variable Costs
+2025-08-07,Exxon Gas Station,-56.0,Variable Costs
+2025-08-07,BP Gas Station,-66.0,Variable Costs
+2025-08-08,Walmart,-48.0,Variable Costs
+2025-08-09,Pizza Delivery,-17.0,Variable Costs
+2025-08-09,Internet - Comcast,-70.0,Fixed Costs
+2025-08-10,Restaurant,-30.0,Variable Costs
+2025-08-11,Phone Bill - Verizon,-85.0,Fixed Costs
+2025-08-12,Local Bar,-26.0,Variable Costs
+2025-08-14,Whole Foods,-105.0,Variable Costs
+2025-08-14,Direct Deposit - Salary,2250.0,Income
+2025-08-19,Uber Eats,-26.0,Variable Costs
+2025-08-20,Safeway,-81.0,Variable Costs
+2025-08-22,Spotify,-10.99,Fixed Costs
+2025-08-24,Best Buy,-73.0,Variable Costs
+2025-08-27,Clothing Store,-109.0,Variable Costs
+2025-08-30,Rent Payment,-1600.0,Fixed Costs
+2025-08-30,Target,-51.0,Variable Costs
+2025-08-30,Direct Deposit - Salary,2250.0,Income
+2025-08-31,Transfer to Savings,-250.0,Savings
+2025-09-01,Student Loan Payment,-300.0,Debt Payment
+2025-09-02,Restaurant,-33.0,Variable Costs
+2025-09-03,Electric Company,-81.0,Fixed Costs
+2025-09-04,Spotify,-10.99,Fixed Costs
+2025-09-05,Trader Joes,-62.0,Variable Costs
+2025-09-07,Chipotle,-31.0,Variable Costs
+2025-09-08,Internet - Comcast,-70.0,Fixed Costs
+2025-09-10,Phone Bill - Verizon,-85.0,Fixed Costs
+2025-09-10,Best Buy,-81.0,Variable Costs
+2025-09-10,Amazon Prime,-14.99,Fixed Costs
+2025-09-11,Local Bar,-51.0,Variable Costs
+2025-09-11,Pizza Delivery,-48.0,Variable Costs
+2025-09-12,Amazon,-112.0,Variable Costs
+2025-09-13,Exxon Gas Station,-65.0,Variable Costs
+2025-09-13,Direct Deposit - Salary,2250.0,Income
+2025-09-14,BP Gas Station,-64.0,Variable Costs
+2025-09-15,Netflix,-15.99,Fixed Costs
+2025-09-15,Whole Foods,-104.0,Variable Costs
+2025-09-16,Clothing Store,-137.0,Variable Costs
+2025-09-17,Dentist,-142.0,Healthcare
+2025-09-18,Local Bar,-49.0,Variable Costs
+2025-09-19,Walmart,-76.0,Variable Costs
+2025-09-22,Pizza Delivery,-47.0,Variable Costs
+2025-09-25,Chipotle,-33.0,Variable Costs
+2025-09-26,Starbucks,-22.0,Variable Costs
+2025-09-29,Direct Deposit - Salary,2250.0,Income
+2025-09-29,Rent Payment,-1600.0,Fixed Costs
+2025-09-30,Pizza Delivery,-52.0,Variable Costs
+2025-09-30,Restaurant,-55.0,Variable Costs
+2025-09-30,Starbucks,-19.0,Variable Costs
+2025-09-30,Transfer to Savings,-300.0,Savings
+2025-09-30,Target,-84.0,Variable Costs
+2025-10-01,Chipotle,-21.0,Variable Costs
+2025-10-01,Student Loan Payment,-300.0,Debt Payment
+2025-10-03,Clothing Store,-113.0,Variable Costs
+2025-10-03,Electric Company,-84.0,Fixed Costs
+2025-10-04,Chipotle,-31.0,Variable Costs
+2025-10-06,Walmart,-80.0,Variable Costs
+2025-10-07,Spotify,-10.99,Fixed Costs
+2025-10-07,Amazon Prime,-14.99,Fixed Costs
+2025-10-08,Internet - Comcast,-70.0,Fixed Costs
+2025-10-10,Phone Bill - Verizon,-85.0,Fixed Costs
+2025-10-12,Netflix,-15.99,Fixed Costs
+2025-10-13,Direct Deposit - Salary,2250.0,Income
+2025-10-14,Uber Eats,-28.0,Variable Costs
+2025-10-15,Safeway,-92.0,Variable Costs
+2025-10-15,Target,-98.0,Variable Costs
+2025-10-15,Clothing Store,-87.0,Variable Costs
+2025-10-20,Restaurant,-30.0,Variable Costs
+2025-10-21,Whole Foods,-77.0,Variable Costs
+2025-10-22,Shell Gas Station,-68.0,Variable Costs
+2025-10-23,Door Dash,-28.0,Variable Costs
+2025-10-25,BP Gas Station,-53.0,Variable Costs
+2025-10-29,Rent Payment,-1600.0,Fixed Costs
+2025-10-29,Direct Deposit - Salary,2250.0,Income
+2025-10-30,Transfer to Savings,-350.0,Savings
+2025-10-30,Trader Joes,-73.0,Variable Costs
+2025-10-31,Student Loan Payment,-300.0,Debt Payment
+2025-10-31,Amazon,-95.0,Variable Costs
+2025-11-01,Local Bar,-28.0,Variable Costs
+2025-11-02,Electric Company,-119.0,Fixed Costs
+2025-11-04,Walmart,-92.0,Variable Costs
+2025-11-06,Local Bar,-41.0,Variable Costs
+2025-11-07,Amazon,-34.0,Variable Costs
+2025-11-07,Internet - Comcast,-70.0,Fixed Costs
+2025-11-09,Phone Bill - Verizon,-85.0,Fixed Costs
+2025-11-09,Starbucks,-50.0,Variable Costs
+2025-11-12,Trader Joes,-53.0,Variable Costs
+2025-11-12,Doctor Copay,-149.0,Healthcare
+2025-11-12,Amazon,-71.0,Variable Costs
+2025-11-12,Direct Deposit - Salary,2250.0,Income
+2025-11-13,Door Dash,-39.0,Variable Costs
+2025-11-14,Pizza Delivery,-46.0,Variable Costs
+2025-11-18,Starbucks,-40.0,Variable Costs
+2025-11-18,Safeway,-71.0,Variable Costs
+2025-11-18,Netflix,-15.99,Fixed Costs
+2025-11-18,Uber Eats,-33.0,Variable Costs
+2025-11-20,Restaurant,-39.0,Variable Costs
+2025-11-20,Spotify,-10.99,Fixed Costs
+2025-11-23,Shell Gas Station,-57.0,Variable Costs
+2025-11-23,BP Gas Station,-66.0,Variable Costs
+2025-11-24,Amazon Prime,-14.99,Fixed Costs
+2025-11-27,Trader Joes,-86.0,Variable Costs
+2025-11-28,Direct Deposit - Salary,2250.0,Income
+2025-11-28,Rent Payment,-1600.0,Fixed Costs
+2025-11-29,Best Buy,-84.0,Variable Costs
+2025-11-29,Transfer to Savings,-400.0,Savings
+2025-11-30,Chipotle,-55.0,Variable Costs
+2025-11-30,Student Loan Payment,-300.0,Debt Payment
+2025-11-30,Exxon Gas Station,-49.0,Variable Costs
+2025-12-02,Amazon Prime,-14.99,Fixed Costs
+2025-12-02,Electric Company,-111.0,Fixed Costs
+2025-12-03,Uber Eats,-41.0,Variable Costs
+2025-12-04,Walmart,-85.0,Variable Costs
+2025-12-06,Clothing Store,-39.0,Variable Costs
+2025-12-07,Uber Eats,-22.0,Variable Costs
+2025-12-07,Internet - Comcast,-70.0,Fixed Costs
+2025-12-09,Phone Bill - Verizon,-85.0,Fixed Costs
+2025-12-12,Direct Deposit - Salary,2250.0,Income
+2025-12-14,Walmart,-82.0,Variable Costs
+2025-12-15,Spotify,-10.99,Fixed Costs
+2025-12-15,Restaurant,-26.0,Variable Costs
+2025-12-16,Pizza Delivery,-35.0,Variable Costs
+2025-12-17,Door Dash,-20.0,Variable Costs
+2025-12-18,Netflix,-15.99,Fixed Costs
+2025-12-20,Pizza Delivery,-45.0,Variable Costs
+2025-12-21,Safeway,-73.0,Variable Costs
+2025-12-21,Local Bar,-35.0,Variable Costs
+2025-12-24,Amazon,-67.0,Variable Costs
+2025-12-25,Shell Gas Station,-44.0,Variable Costs
+2025-12-28,Rent Payment,-1600.0,Fixed Costs
+2025-12-28,Direct Deposit - Salary,2250.0,Income
+2025-12-29,Transfer to Savings,-450.0,Savings
+2025-12-30,Student Loan Payment,-300.0,Debt Payment
+2025-12-30,Walmart,-100.0,Variable Costs
+2025-12-31,BP Gas Station,-54.0,Variable Costs
+2025-12-31,Restaurant,-56.0,Variable Costs
+2026-01-01,Electric Company,-80.0,Fixed Costs
+2026-01-01,Chipotle,-25.0,Variable Costs
+2026-01-01,Chipotle,-16.0,Variable Costs
+2026-01-03,Trader Joes,-52.0,Variable Costs
+2026-01-03,Uber Eats,-17.0,Variable Costs
+2026-01-06,Internet - Comcast,-70.0,Fixed Costs
+2026-01-07,BP Gas Station,-63.0,Variable Costs
+2026-01-08,Phone Bill - Verizon,-85.0,Fixed Costs
+2026-01-10,Amazon Prime,-14.99,Fixed Costs
+2026-01-10,Safeway,-47.0,Variable Costs
+2026-01-11,Direct Deposit - Salary,2250.0,Income
+2026-01-13,Chipotle,-21.0,Variable Costs
+2026-01-14,Target,-39.0,Variable Costs
+2026-01-14,Netflix,-15.99,Fixed Costs
+2026-01-15,Clothing Store,-42.0,Variable Costs
+2026-01-16,Chipotle,-53.0,Variable Costs
+2026-01-16,BP Gas Station,-67.0,Variable Costs
+2026-01-17,Pizza Delivery,-25.0,Variable Costs
+2026-01-18,Spotify,-10.99,Fixed Costs
+2026-01-18,Clothing Store,-77.0,Variable Costs
+2026-01-19,Target,-82.0,Variable Costs
+2026-01-19,Exxon Gas Station,-68.0,Variable Costs
+2026-01-24,Door Dash,-16.0,Variable Costs
