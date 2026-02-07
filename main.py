@@ -5,6 +5,7 @@ import pandas as pd
 import io
 import os
 import json
+from datetime import datetime
 
 from dotenv import load_dotenv
 from anthropic import Anthropic
@@ -32,13 +33,37 @@ class ChatRequest(BaseModel):
 def root():
     return {"app": "Resilience Finance AI", "status": "running"}
 
+def detect_date_range(df):
+    """Automatically detect the number of months in the dataset"""
+    try:
+        df['date'] = pd.to_datetime(df['date'], errors='coerce')
+        df = df.dropna(subset=['date'])
+        
+        if len(df) == 0:
+            return 1  # Default fallback
+        
+        min_date = df['date'].min()
+        max_date = df['date'].max()
+        
+        # Calculate months difference
+        months = (max_date.year - min_date.year) * 12 + (max_date.month - min_date.month) + 1
+        
+        return max(1, months)  # At least 1 month
+    except:
+        return 1  # Fallback
+
 @track(name="financial_analysis")
-def get_ai_insights(income, expenses, df, basic_analysis):
+def get_ai_insights(income, expenses, df, basic_analysis, num_months):
     """Use Claude to provide enhanced financial insights"""
     
     net = income - expenses
     savings_rate = (net / income * 100) if income > 0 else 0
     expense_ratio = (expenses / income * 100) if income > 0 else 100
+    
+    # Calculate monthly averages
+    monthly_income = income / num_months
+    monthly_expenses = expenses / num_months
+    monthly_net = net / num_months
     
     # Get top spending categories
     if 'category' in df.columns:
@@ -48,12 +73,24 @@ def get_ai_insights(income, expenses, df, basic_analysis):
     else:
         categories_text = "Categories not available"
     
+    # Analyze trends over time
+    try:
+        df['date'] = pd.to_datetime(df['date'], errors='coerce')
+        df['month'] = df['date'].dt.to_period('M')
+        monthly_summary = df.groupby('month').agg({
+            'amount': lambda x: (x[x > 0].sum(), abs(x[x < 0].sum()))
+        }).reset_index()
+        
+        trend_analysis = "Trend data available for detailed analysis"
+    except:
+        trend_analysis = "Unable to analyze trends"
+    
     prompt = f"""You are a financial literacy educator. Analyze this financial data and provide helpful, educational insights.
 
-Financial Summary:
-- Income (6 months): ${income:,.2f}
-- Expenses (6 months): ${expenses:,.2f}
-- Net: ${net:,.2f}
+Financial Summary ({num_months} months of data):
+- Total Income: ${income:,.2f} (avg ${monthly_income:,.2f}/month)
+- Total Expenses: ${expenses:,.2f} (avg ${monthly_expenses:,.2f}/month)
+- Net: ${net:,.2f} (avg ${monthly_net:,.2f}/month)
 - Savings Rate: {savings_rate:.1f}%
 - Expense Ratio: {expense_ratio:.1f}%
 - Current Risk Score: {basic_analysis['score']}
@@ -61,22 +98,24 @@ Financial Summary:
 Top Spending Categories:
 {categories_text}
 
-IMPORTANT: If analyzing data over multiple months, look for trends:
-- Has income increased or decreased over the timeframe?
-- Are expenses changing significantly?
-- Are there large one-time transactions that skew averages?
-- Note if the financial situation appears to be improving or worsening over time.
+IMPORTANT - TREND ANALYSIS:
+You have {num_months} months of data. Look for patterns:
+- Is income increasing, decreasing, or stable month-to-month?
+- Are expenses trending up or down over time?
+- Are there large one-time transactions that skew the averages?
+- Is the savings rate improving or worsening?
+- Note if the financial situation appears to be improving or declining over the time period
 
 Provide:
-1. A brief assessment (2-3 sentences) of overall financial health
+1. A brief assessment (2-3 sentences) of overall financial health, noting any trends
 2. 3-4 KEY concerns with educational context (why each matters)
 3. 3-4 actionable next steps (educational, not advice - use "consider" not "you should")
 
-IMPORTANT: Be educational, not prescriptive. Include disclaimer.
+IMPORTANT: Be educational, not prescriptive. Include disclaimer that this is for educational purposes only.
 
 Format as JSON only, no markdown:
 {{
-  "assessment": "brief overview",
+  "assessment": "brief overview mentioning trends if significant",
   "concerns": ["concern with context"],
   "recommendations": ["educational next step"]
 }}"""
@@ -156,6 +195,10 @@ async def upload(file: UploadFile = File(...)):
     
     df = df.dropna(subset=['amount'])
     
+    # Detect number of months
+    num_months = detect_date_range(df)
+    print(f"Detected {num_months} months of data")
+    
     income = df[df['amount'] > 0]['amount'].sum()
     expenses = abs(df[df['amount'] < 0]['amount'].sum())
     net = income - expenses
@@ -189,7 +232,8 @@ async def upload(file: UploadFile = File(...)):
         concerns.append(f"Negative cash flow: spending ${abs(net):.2f} more than earning")
         recommendations.append("Urgent: reduce expenses or increase income")
     
-    monthly_expenses = expenses / 3
+    # Use detected months for emergency fund calculation
+    monthly_expenses = expenses / num_months
     emergency_months = net / monthly_expenses if monthly_expenses > 0 else 0
     
     if emergency_months < 3:
@@ -208,8 +252,8 @@ async def upload(file: UploadFile = File(...)):
         "recommendations": recommendations[:3]
     }
     
-    # Try AI-enhanced insights
-    ai_insights = get_ai_insights(income, expenses, df, basic_analysis)
+    # Try AI-enhanced insights with correct month count
+    ai_insights = get_ai_insights(income, expenses, df, basic_analysis, num_months)
     
     if ai_insights:
         analysis = {
@@ -223,8 +267,11 @@ async def upload(file: UploadFile = File(...)):
     
     return {
         "transactions": int(len(df)),
+        "months": num_months,
         "income": float(round(income, 2)),
         "expenses": float(round(expenses, 2)),
+        "monthly_income": float(round(income / num_months, 2)),
+        "monthly_expenses": float(round(expenses / num_months, 2)),
         "analysis": analysis
     }
 
@@ -237,42 +284,45 @@ async def chat(req: ChatRequest):
     # Build context from transaction summary if available
     context = ""
     if req.transactions_summary:
+        months = req.transactions_summary.get('months', 1)
+        income = req.transactions_summary.get('income', 0)
+        expenses = req.transactions_summary.get('expenses', 0)
+        
         context = f"""
-        User's Financial Context:
-            Transactions: {req.transactions_summary.get('transactions', 'N/A')}
-            Income: ${req.transactions_summary.get('income', 0):,.2f}
-            Expenses: ${req.transactions_summary.get('expenses', 0):,.2f}
-            Risk Score: {req.transactions_summary.get('analysis', {}).get('score', 'N/A')}
-            """
+User's Financial Context ({months} months of data):
+    Transactions: {req.transactions_summary.get('transactions', 'N/A')}
+    Total Income: ${income:,.2f} (${income/months:,.2f}/month avg)
+    Total Expenses: ${expenses:,.2f} (${expenses/months:,.2f}/month avg)
+    Risk Score: {req.transactions_summary.get('analysis', {}).get('score', 'N/A')}
+"""
     
     system_prompt = """You are a financial literacy educator helping people understand their finances better.
-            Guidelines:
-            - Be educational, not prescriptive (use "consider" not "you should")
-            - Explain WHY things matter, don't just tell people what to do
-            - Provide context and benchmarks when relevant
-            - Keep responses concise (2-3 paragraphs max)
-            - Include specific, actionable steps when appropriate
-            - Always add disclaimer that this is educational, not financial advice
-            
-            Look for Trends:
-            - Is income increasing or decreasing over time
-            - Are expenses growing faster than income
-            - Are expenses changing
-            - Are there any large one-time transactions that skew the data
-            - Note if the situation appears to be improving/worsening over time
+Guidelines:
+- Be educational, not prescriptive (use "consider" not "you should")
+- Explain WHY things matter, don't just tell people what to do
+- Provide context and benchmarks when relevant
+- Keep responses concise (2-3 paragraphs max)
+- Include specific, actionable steps when appropriate
+- Always add disclaimer that this is educational, not financial advice
 
-            Focus on:
-            - Building emergency funds
-            - Understanding spending patterns
-            - Responsible debt management
-            - Savings strategies
-            - Financial literacy fundamentals
+Look for Trends:
+- Is income increasing or decreasing over time
+- Are expenses growing faster than income
+- Are there any large one-time transactions that skew the data
+- Note if the situation appears to be improving/worsening over time
 
-            Never recommend:
-            - Specific investments or stocks
-            - Cryptocurrency speculation
-            - High-risk financial products
-            - Tax evasion strategies""" 
+Focus on:
+- Building emergency funds
+- Understanding spending patterns
+- Responsible debt management
+- Savings strategies
+- Financial literacy fundamentals
+
+Never recommend:
+- Specific investments or stocks
+- Cryptocurrency speculation
+- High-risk financial products
+- Tax evasion strategies""" 
     
     try:
         response = anthropic_client.messages.create(
@@ -302,6 +352,7 @@ async def chat(req: ChatRequest):
                 return {"response": tip + "\n\nNote: This is educational information only, not financial advice."}
         
         return {"response": "I can help explain financial concepts like budgeting, saving, debt management, and emergency funds. What would you like to learn about?\n\nNote: This is educational information only, not financial advice."}
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
